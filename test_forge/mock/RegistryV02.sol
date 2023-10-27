@@ -7,16 +7,16 @@ import {ObjectType} from "../../contracts/types/ObjectType.sol";
 
 import {IChainNft} from "../../contracts/registry/IChainNft.sol";
 import {ChainNft} from "../../contracts/registry/ChainNft.sol";
-import {RegistryUpgradeable} from "../../contracts/registry/RegistryUpgradeable.sol";
+import {Registry} from "../../contracts/registry/Registry.sol";
 
 // V02 is used to test upgradeability gas usage/byte code footprint - both MUST BE constant, the same as with V01
 // 1) introduces no changes to storage 
-// 2) implements empty _upgrade()
-contract RegistryV02 is RegistryUpgradeable
+// 2) uses _initialize() from V01
+// 3) implements empty _upgrade()
+contract RegistryV02 is Registry
 {
-    // @custom:storage-location erc7201:etherisc.storage.Registry
+    // @custom:storage-location erc7201:gif-next.contracts.registry.Registry.sol
     struct StorageV2 {
-
         // copy pasted from V1
         mapping(NftId nftId => ObjectInfo info) _info;
         mapping(address object => NftId nftId) _nftIdByAddress;
@@ -32,21 +32,13 @@ contract RegistryV02 is RegistryUpgradeable
         address _initialOwner;
 
         address _protocolOwner;
-
-        // V2 addition
-        //uint dataV2;
     }
-    
-    function _getStorageV02() private pure returns (StorageV2 storage $) {
+
+    function _getStorageV2() private pure returns (StorageV2 storage $) {
         assembly {
-            $.slot := locationV1
+            $.slot := LOCATION_V1
         }
     }
-
-    /*function getDataV2() public view returns(uint) {
-        StorageV2 storage $ = _getStorageV02();
-        return $.dataV2;
-    }*/
 
     function getVersion() 
         public 
@@ -57,42 +49,9 @@ contract RegistryV02 is RegistryUpgradeable
         return VersionLib.toVersion(1, 1, 0);
     } 
 
-    // do not define if no changes to storage
-    function _initialize(bytes memory data)
-        internal
-        virtual override
-        onlyInitializing
-    {
-        // copy paste from V1 
-        // change getter function
-        address protocolOwner = abi.decode(data, (address));
-        StorageV2 storage $ = _getStorageV02();
-
-        $._initialOwner = msg.sender;
-        $._protocolOwner = protocolOwner;
-
-        $._chainNftInternal = new ChainNft(address(this));// adds 10kb to deployment size
-        $._chainNft = IChainNft($._chainNftInternal);
-        
-        // initial registry setup
-        _registerProtocol();
-        $._nftId = _registerRegistry();
-
-        // setup rules for further registrations
-        _setupValidTypes();
-        _setupValidParentTypes();
-
-        //new in this version 
-        //$.dataV2 = type(uint).max;
-    }
-
     function _upgrade(bytes memory data)
         internal
         virtual override
         onlyInitializing
-    {
-        // add changes 
-        //StorageV2 storage $ = _getStorageV02();
-        //$.dataV2 = type(uint).max; 
-    }
+    {}
 }
