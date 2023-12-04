@@ -79,7 +79,7 @@ contract RegistryV03 is RegistryV02
         $._chainNft = IChainNft($._chainNftInternal);
         
         // initial registry setup
-        _registerProtocol();
+        /*_registerProtocol();
         $._nftId = _registerRegistry();
 
         // set object parent relations
@@ -87,7 +87,7 @@ contract RegistryV03 is RegistryV02
 
         _registerInterface(type(IRegistry).interfaceId);
         _registerInterface(type(IRegisterable).interfaceId);
-        _registerInterface(type(IVersionable).interfaceId);
+        _registerInterface(type(IVersionable).interfaceId);*/
 
         // new addition
         $.dataV3 = type(uint).max;
@@ -107,5 +107,11 @@ contract RegistryV03 is RegistryV02
         assembly {
             $.slot := REGISTRY_LOCATION_V3
         }
+    }
+
+    constructor(address protocolOwner, address registryService, string memory serviceName, VersionPart majorVersion)
+        RegistryV02(protocolOwner, registryService, serviceName, majorVersion)
+    {
+
     }
 }
