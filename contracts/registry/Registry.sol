@@ -9,7 +9,7 @@ import {ChainNft} from "./ChainNft.sol";
 import {IRegistry} from "./IRegistry.sol";
 import {NftId, toNftId, zeroNftId, NftIdLib} from "../types/NftId.sol";
 import {VersionPart} from "../types/Version.sol";
-import {ObjectType, PROTOCOL, REGISTRY, TOKEN, SERVICE, INSTANCE, STAKE, PRODUCT, DISTRIBUTOR, ORACLE, POOL, POLICY, BUNDLE} from "../types/ObjectType.sol";
+import {ObjectType, PROTOCOL, REGISTRY, TOKEN, SERVICE, INSTANCE, STAKE, PRODUCT, DISTRIBUTION, ORACLE, POOL, POLICY, BUNDLE} from "../types/ObjectType.sol";
 
 // TODO make registry upgradable
 contract Registry is
@@ -21,7 +21,6 @@ contract Registry is
     string public constant EMPTY_URI = "";
 
     mapping(NftId nftId => ObjectInfo info) private _info;
-    mapping(NftId nftId => address owner) private _owner;
     mapping(address object => NftId nftId) private _nftIdByAddress;
     mapping(ObjectType objectType => bool) private _isValidType;
     mapping(ObjectType objectType => mapping(ObjectType objectParentType => bool)) private _isValidParentType;
@@ -280,6 +279,7 @@ contract Registry is
         _isValidType[PRODUCT()] = true;
         _isValidType[ORACLE()] = true;
         _isValidType[POOL()] = true;
+        _isValidType[DISTRIBUTION()] = true;
         _isValidType[POLICY()] = true;
         _isValidType[BUNDLE()] = true;
     }
@@ -293,7 +293,7 @@ contract Registry is
 
         // instance as parent
         _isValidParentType[PRODUCT()][INSTANCE()] = true;
-        _isValidParentType[DISTRIBUTOR()][INSTANCE()] = true;
+        _isValidParentType[DISTRIBUTION()][INSTANCE()] = true;
         _isValidParentType[ORACLE()][INSTANCE()] = true;
         _isValidParentType[POOL()][INSTANCE()] = true;
 
