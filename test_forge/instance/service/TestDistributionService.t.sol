@@ -14,7 +14,7 @@ import {UFixedLib} from "../../../contracts/types/UFixed.sol";
 contract TestDistributionService is TestGifBase {
     using NftIdLib for NftId;
 
-    function test_register_missingDistributionOwnerRole() public {
+    function test_DistributionService_register_missingDistributionOwnerRole() public {
         vm.startPrank(distributionOwner);
         distribution = new Distribution(
             address(registry),
@@ -26,7 +26,26 @@ contract TestDistributionService is TestGifBase {
         );
 
         vm.expectRevert("ERROR:DIS-001:NOT_DISTRIBUTION_OWNER_ROLE");
-        NftId distributionNftId = distributionService.register(address(distribution));
+        distributionService.register(address(distribution));
+    }
+
+    function test_DistributionService_register() public {
+        vm.startPrank(instanceOwner);
+        instanceAccessManager.grantRole(DISTRIBUTION_OWNER_ROLE().toInt(), distributionOwner, 0);
+        vm.stopPrank();
+
+        vm.startPrank(distributionOwner);
+        distribution = new Distribution(
+            address(registry),
+            instanceNftId,
+            address(token),
+            false,
+            FeeLib.zeroFee(),
+            distributionOwner
+        );
+
+        NftId nftId = distributionService.register(address(distribution));
+        assertFalse(nftId.eqz(), "nftId is zero");
     }
 
 }
