@@ -6,8 +6,6 @@ import { FunctionDescriptorContext, InheritanceSpecifierContext, ModifierInvocat
 import { logger } from "./logger";
 
 async function main() {
-    // read file ../contracts/staking/StakingService.sol
-
     fs.readdirSync("contracts", { recursive: true, withFileTypes: true}).forEach(file => {
         if (file.name.endsWith(".sol") && file.isFile() ) {
             const f = file.path + "/" + file.name;
@@ -56,8 +54,6 @@ class RestrictedMissingListener extends SolidityListener {
     isPure = false;
     functionDescriptor = '';
     modifierList = '';
-
-    // Service, AccessManagedUpgradeable, AccessManaged, ObjectManager, Component, InstanceLinkedComponent, ComponentVerifyingService
 
     public enterContractDefinition = (/*ctx: FunctionDefinitionContext*/) => {
         this.isRelevant = false;
