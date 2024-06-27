@@ -1,0 +1,25 @@
+= Upgradeability
+
+Contains interfaces/contracts linked to contract upgradeability. 
+
+== Contracts
+
+{{AccessManagerExtendedInitializeable}}
+{{ContractDeployerLib}}
+{{ERC165}}
+{{INftOwnable}}
+{{IPolicyHolder}}
+{{IRegisterable}}
+{{IRegistryLinked}}
+{{IService}}
+{{IVersionable}}
+{{NftOwnable}}
+{{PolicyHolder}}
+{{ProxyManager}}
+{{Registerable}}
+{{RegistryLinked}}
+{{Service}}
+{{TokenHandler}}
+{{UpgradableProxyWithAdmin}}
+{{Versionable}}
+

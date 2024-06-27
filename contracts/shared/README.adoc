@@ -1,6 +1,6 @@
 = Shared
 
-Contains the shared contracts. 
+Contains interfaces and contracts used across the project.
 
 == Contracts
 
