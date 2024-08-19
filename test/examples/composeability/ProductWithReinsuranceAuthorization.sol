@@ -3,6 +3,7 @@ pragma solidity ^0.8.20;
 
 import {Authorization} from "../../../contracts/authorization/Authorization.sol";
 import {BasicProduct} from "../../../contracts/product/BasicProduct.sol"; 
+import {SimpleProduct} from "../../../contracts/examples/unpermissioned/SimpleProduct.sol";
 import {PRODUCT, POOL} from "../../../contracts/type/ObjectType.sol";
 import {IAccess} from "../../../contracts/authorization/IAccess.sol";
 import {IInstanceLinkedComponent} from "../../../contracts/shared/IInstanceLinkedComponent.sol";
@@ -19,16 +20,6 @@ contract ProductWithReinsuranceAuthorization
           Authorization("ProductWithReinsurance", PRODUCT())
      {}
 
-     // TODO cleanup
-     // function _setupTargets()
-     //      internal
-     //      virtual override
-     // {
-     //      uint64 index = 1; // 0 is default
-     //      _addComponentTargetWithRole(PRODUCT(), index);
-     // }
-
-
      function _setupTargetAuthorizations()
           internal
           virtual override
@@ -38,6 +29,7 @@ contract ProductWithReinsuranceAuthorization
           // authorize public role (open access to any account, only allows to lock target)
           functions = _authorizeForTarget(getMainTargetName(), PUBLIC_ROLE());
           _authorize(functions, BasicProduct.setFees.selector, "setFees");
+          _authorize(functions, SimpleProduct.approveTokenHandler.selector, "approveTokenHandler");
           _authorize(functions, IInstanceLinkedComponent.withdrawFees.selector, "withdrawFees");
 
           // authorize pool service for callback

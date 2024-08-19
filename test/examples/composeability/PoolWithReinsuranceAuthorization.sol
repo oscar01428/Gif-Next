@@ -21,16 +21,6 @@ contract PoolWithReinsuranceAuthorization
           Authorization("PoolWithReinsurance", POOL())
      {}
 
-     // TODO cleanup
-     // function _setupTargets()
-     //      internal
-     //      virtual override
-     // {
-     //      uint64 index = 1; // 0 is default
-     //      _addComponentTargetWithRole(POOL(), index);
-     // }
-
-
      function _setupTargetAuthorizations()
           internal
           virtual override
