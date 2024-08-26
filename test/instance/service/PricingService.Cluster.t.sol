@@ -33,7 +33,7 @@ contract PricingServiceClusterTest is GifClusterTest {
     }
 
     function test_pricingServiceCalculatePremium_referralFromOtherProductCluster() public {
-
+        // GIVEN
         vm.startPrank(instanceOwner);
         DistributorType distributorType = myDistribution1.createDistributorType(
             "Gold",
@@ -65,11 +65,14 @@ contract PricingServiceClusterTest is GifClusterTest {
         Amount sumInsured = AmountLib.toAmount(1000);
         Seconds lifetime = SecondsLib.toSeconds(300);
 
+        // THEN
         vm.expectRevert(abi.encodeWithSelector(
             IDistributionService.ErrorDistributionServiceReferralDistributionMismatch.selector, 
             referralId,
             myDistributionNftId1,
             myDistributionNftId2));
+
+        // WHEN
         pricingService.calculatePremium(
             myProductNftId2, 
             riskId, 
