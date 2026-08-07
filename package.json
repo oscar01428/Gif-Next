@@ -39,7 +39,7 @@
     "eslint": "^9.9.1",
     "hardhat": "^2.17.2",
     "prettier": "^3.0.3",
-    "prettier-plugin-solidity": "^1.1.3",
+    "prettier-plugin-solidity": "^2.4.0",
     "typescript": "^5"
   },
   "dependencies": {
